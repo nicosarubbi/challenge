@@ -1,11 +1,11 @@
 import datetime
-from .accounts import Account, AccountCreation, Transaction, with_account
+from .accounts import AccountCreation, Transaction, with_account
 
 
 @AccountCreation.rule
 def account_already_initialized(operation):
     "Once created, the account should not be updated or recreated"
-    if Account.account:
+    if operation.account:
         return 'account-already-initialized'
 
 @Transaction.rule
