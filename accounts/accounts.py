@@ -14,13 +14,13 @@ class OperationFactory():
     def get_instance(self, js):
         for op in self.operations:
             if op.KEY in js:
-                return op(**js[op.KEY]).run()
+                return op(**js[op.KEY])
         return None
 
 
 class Operation():
     KEY = None
-    _rules = []
+    rules = []
 
     @classmethod
     def parse(self, text):
@@ -32,12 +32,12 @@ class Operation():
 
     @classmethod
     def rule(cls, function):
-        cls._rules.append(function)
+        cls.rules.append(function)
         return function
 
     def execute_rules(self):
         violations = []
-        for rule in self._rules:
+        for rule in self.rules:
             error = rule(self)
             if error:
                 violations.append(error)
@@ -56,7 +56,7 @@ class Operation():
 @OperationFactory.add
 class AccountCreation(Operation):
     KEY = 'account'
-    _rules = []
+    rules = []
 
     def __init__(self, activeCard, availableLimit):
         self.active_card = activeCard
@@ -75,7 +75,7 @@ class AccountCreation(Operation):
 @OperationFactory.add
 class Transaction(Operation):
     KEY = 'transaction'
-    _rules = []
+    rules = []
     DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
 
     def __init__(self, merchant, amount, time):
@@ -86,10 +86,8 @@ class Transaction(Operation):
         self.violations = []
 
     def run(self):
-        print(111)
         self.violations = self.execute_rules()
         if self.account:
-            print(222)
             self.account.apply_transaction(self)
         return self
 
@@ -119,5 +117,6 @@ def with_account(rule):
     def rule_with_account(operation):
         if operation.account:
             return rule(operation)
+    rule_with_account.__name__ = rule.__name__
     return rule_with_account
 

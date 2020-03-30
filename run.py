@@ -1,6 +1,5 @@
 import sys
-import accounts
-import business_logic
+from accounts import accounts, business_logic
 
 
 if __name__ == '__main__':
