@@ -1,4 +1,6 @@
 import unittest
+from accounts import business_logic
+
 
 class BasicTestCase(unittest.TestCase):
     def setUp(self):
@@ -7,7 +9,4 @@ class BasicTestCase(unittest.TestCase):
     def test_something(self):
         self.assertEqual(1, 1.0, 'int is not float')
 
-
-if __name__ == '__main__':
-        unittest.main()
 
