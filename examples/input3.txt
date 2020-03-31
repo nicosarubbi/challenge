@@ -1,0 +1,5 @@
+{ "transaction": { "merchant": "Lorem Ipsum", "amount": 20, "time": "2019-02-13T10:00:00.000Z" } }
+{"account": { "activeCard": false, "availableLimit": 100 } }
+
+{  "transaction" : {"merchant":"Lorem Ipsum",   "amount":  20,"time" : "2019-02-13T10:00:00.000Z" } }
+{ "transaction": { "merchant": "Dolor Sit Amet", "amount": 90, "time": "2019-02-13T11:00:00.000Z"   } }

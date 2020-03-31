@@ -33,7 +33,7 @@ def card_not_active(operation):
 def high_frequency_small_interval(operation):
     'There should not be more than 3 transactions on a 2 minute interval'
     delta = datetime.timedelta(minutes=2)
-    if len([x for x in operation.account.transactions[-2:] if x.time >= operation.time - delta]) >= 2:
+    if len([x for x in operation.account.transactions if x.time >= operation.time - delta]) >= 2:
         return 'high-frequency-small-interval'
 
 @Transaction.rule
@@ -41,7 +41,7 @@ def high_frequency_small_interval(operation):
 def doubled_transaction(operation):
     'There should not be more than 2 similar transactions (same amount and merchant) in a 2 minutes interval'
     delta = datetime.timedelta(minutes=2)
-    if any(x for x in operation.account.transactions[-1:]
+    if any(x for x in operation.account.transactions
             if x.time >= operation.time - delta
             and operation.amount == x.amount
             and operation.merchant == x.merchant):

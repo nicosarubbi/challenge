@@ -1,0 +1,4 @@
+{"account": {}, "violations": ["account-does-not-exists"]}
+{"account": {"activeCard": false, "availableLimit": 100}, "violations": []}
+{"account": {"activeCard": false, "availableLimit": 100}, "violations": ["card-not-active"]}
+{"account": {"activeCard": false, "availableLimit": 100}, "violations": ["card-not-active"]}

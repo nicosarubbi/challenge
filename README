@@ -1,1 +1,15 @@
-documentation here
+To install:
+$ sudo apt-install python3.7
+
+
+To execute:
+$ python3.7 run.py < examples/input1.txt
+
+
+To run unit-tests
+$ python3.7 -m unittest
+
+
+To execute, showing the input in the same output
+$ python3.7 -run.py --showinput < example/input1.txt
+
