@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 from accounts import accounts, business_logic
 

@@ -1,15 +1,46 @@
-To install:
-$ sudo apt-install python3.7
++================+
+| HOW TO INSTALL |
++================+
 
+Install python3.7 or superior, using apt, brew or just downloading it from https://www.python.org/downloads/
 
-To execute:
+$ sudo apt install python3.7
+
+You don't need any external library or anything else.
+
++================+
+|   HOW TO RUN   |
++================+
+
+For running the script execute the 'run.py' file using python3.7 or superior.
+
+$ python3.7 run.py < inputfile
+
+In the 'examples' folder there are some examples for using as inputfile.
+
+$ cat examples/input1.txt
 $ python3.7 run.py < examples/input1.txt
 
++================+
+|  HOW TO TESTS  |
++================+
 
-To run unit-tests
+For running unit tests, execute this command:
+
 $ python3.7 -m unittest
 
+The folder 'tests' contains all the tests.
 
-To execute, showing the input in the same output
-$ python3.7 -run.py --showinput < example/input1.txt
++================+
+|   SOME NOTES   |
++================+
+
+- The file 'run.py' is the main executable.
+- The 'accounts' folder contains all the important code.
+- The business rules are in 'accounts/business_rules.py'.
+- The file 'accounts/accounts.py' contains the operations over accounts.
+
++================+
+|     ENJOY!!    |
++================+
 
