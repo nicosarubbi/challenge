@@ -3,7 +3,8 @@ import json
 
 
 class Account():
-    account = None
+    " Saves the state of an account "
+    account = None  # almost like a singleton
 
     def __init__(self, active_card=False, available_limit=0):
         self.active_card = active_card
@@ -11,27 +12,32 @@ class Account():
         self.transactions = []
 
     def to_json(self):
+        " returns a dict to export as a json "
         return {
             "activeCard": self.active_card,
             "availableLimit": self.available_limit,
         }
 
     def apply_transaction(self, transaction):
+        " saves the transaction and discounts the amount "
         self.transactions.append(transaction)
         if not transaction.violations:
             self.available_limit -=  transaction.amount
 
 
 class OperationFactory():
+    " Returns an instance of Operation "
     operations = []
 
     @classmethod
     def add(cls, op_class):
+        " adds a new subclass to manage the instances. Works as decorator "
         cls.operations.append(op_class)
         return op_class
 
     @classmethod
     def get_instance(self, js):
+        " Creates an instance of Operation subclasses, taking a json as reference "
         for op in self.operations:
             if op.KEY in js:
                 return op(**js[op.KEY])
@@ -39,8 +45,9 @@ class OperationFactory():
 
 
 class Operation():
-    KEY = None
-    rules = []
+    " Abstract class for the different operations "
+    KEY = None  # identifies the subclass for the factory. Overwrite on subclasses
+    rules = []  # list of business rules. Overwrite on subclasses
 
     def __init__(self, **args):
         self.violations = []
@@ -48,22 +55,26 @@ class Operation():
 
     @classmethod
     def parse(self, text):
+        " Takes a text and transforms into an instance. Then checks for violations "
         if not text:
             return None
         js = json.loads(text)
         instance = OperationFactory.get_instance(js)
         return instance and instance.run()
 
-    def run(self):
-        self.violations = self.execute_rules()
-        return self
-
     @classmethod
     def rule(cls, function):
+        " adds a function as a business rule. Works as decorator "
         cls.rules.append(function)
         return function
 
+    def run(self):
+        " check for violations. Overwrite on subclasses when needed "
+        self.violations = self.execute_rules()
+        return self
+
     def execute_rules(self):
+        " returns the violations to business rules "
         violations = []
         for rule in self.rules:
             error = rule(self)
@@ -72,17 +83,20 @@ class Operation():
         return violations
 
     def to_json(self):
+        " returns a dict to export as a json "
         return {
             'account': self.account and self.account.to_json() or {},
             'violations': self.violations,
         }
 
     def __str__(self):
+        " str(x) --> x.__str__() "
         return json.dumps(self.to_json())
 
 
 @OperationFactory.add
 class AccountCreation(Operation):
+    " Operation for creating an account "
     KEY = 'account'
     rules = []
 
@@ -93,6 +107,7 @@ class AccountCreation(Operation):
         self.violations = []
 
     def run(self):
+        " check for violations and assign the account to the Account class "
         self.violations = self.execute_rules()
         if not self.account:
             self.account = Account.account = Account(self.active_card, self.available_limit)
@@ -113,6 +128,7 @@ class Transaction(Operation):
         self.violations = []
 
     def run(self):
+        " check for violations and applies the transaction "
         self.violations = self.execute_rules()
         if self.account:
             self.account.apply_transaction(self)
